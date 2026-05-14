@@ -1,12 +1,15 @@
 {
-  "name": "hotel-bot",
+  "name": "nitebot",
   "version": "1.0.0",
-  "description": "Okinawa Hotel AI Concierge",
+  "description": "NiteBot — AI Hotel Concierge Platform",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
   "engines": {
     "node": ">=18.0.0"
-  }
+  },
+  "keywords": ["nitebot", "hotel", "ai", "concierge", "okinawa"],
+  "author": "NiteBot",
+  "license": "ISC"
 }
