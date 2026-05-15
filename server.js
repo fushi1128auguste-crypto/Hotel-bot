@@ -108,13 +108,17 @@ const HTML_PAGE = `<!DOCTYPE html>
     --bubble-user: linear-gradient(135deg, #0099cc, #00d4ff);
   }
 
+  html, body {
+    height: 100%;
+  }
+
   body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     background: radial-gradient(ellipse at 30% 20%, #0a1f3d 0%, #06080f 55%, #000510 100%);
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
+    min-height: 100%;
     padding: 1rem;
   }
 
@@ -158,7 +162,7 @@ const HTML_PAGE = `<!DOCTYPE html>
       0 0 120px rgba(0,212,255,0.04);
     display: flex;
     flex-direction: column;
-    height: 620px;
+    height: min(620px, 100vh);
     position: relative;
     z-index: 1;
   }
@@ -940,10 +944,10 @@ const DEMO_PAGE = `<!DOCTYPE html>
   }
   .chat-panel {
     position: fixed;
-    bottom: 100px;
+    bottom: 80px;
     right: 28px;
     width: 380px;
-    height: 580px;
+    height: min(640px, calc(100vh - 100px));
     border-radius: 20px;
     overflow: hidden;
     box-shadow: 0 8px 40px rgba(0,0,0,0.3), 0 0 60px rgba(0,212,255,0.12);
