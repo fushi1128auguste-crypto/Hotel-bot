@@ -654,10 +654,469 @@ function callOpenAI(messages, callback) {
   req.end();
 }
 
+const DEMO_PAGE = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Place Guesthouse — Tomari, Okinawa</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --sand: #f5f0e8;
+    --ocean: #1a6b8a;
+    --ocean-dark: #0f4a62;
+    --coral: #e8694a;
+    --text: #2c2c2c;
+    --muted: #6b6b6b;
+  }
+  body { font-family: 'Inter', sans-serif; background: var(--sand); color: var(--text); }
+
+  /* NAV */
+  nav {
+    background: white;
+    padding: 16px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    position: sticky; top: 0; z-index: 100;
+  }
+  .nav-logo { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--ocean-dark); }
+  .nav-logo span { color: var(--coral); }
+  .nav-links { display: flex; gap: 28px; list-style: none; }
+  .nav-links a { text-decoration: none; color: var(--muted); font-size: 14px; font-weight: 500; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--ocean); }
+  .nav-cta {
+    background: var(--ocean);
+    color: white;
+    padding: 9px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background 0.2s;
+  }
+  .nav-cta:hover { background: var(--ocean-dark); }
+
+  /* HERO */
+  .hero {
+    height: 520px;
+    background:
+      linear-gradient(to bottom, rgba(15,74,98,0.55) 0%, rgba(15,74,98,0.3) 60%, rgba(245,240,232,0.1) 100%),
+      radial-gradient(ellipse at 70% 40%, #1a8fa8 0%, #0f6b8a 30%, #063a52 70%, #021e2e 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image:
+      radial-gradient(2px 2px at 15% 25%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(2px 2px at 35% 15%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 60% 30%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(2px 2px at 80% 20%, rgba(255,255,255,0.35) 0%, transparent 100%),
+      radial-gradient(3px 3px at 50% 60%, rgba(255,255,255,0.15) 0%, transparent 100%),
+      radial-gradient(2px 2px at 25% 70%, rgba(255,255,255,0.2) 0%, transparent 100%),
+      radial-gradient(60px 20px at 30% 75%, rgba(255,255,255,0.06) 0%, transparent 100%),
+      radial-gradient(80px 25px at 65% 80%, rgba(255,255,255,0.05) 0%, transparent 100%);
+    pointer-events: none;
+  }
+  .hero-badge {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: white;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+    backdrop-filter: blur(4px);
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 48px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 12px;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.3);
+  }
+  .hero p {
+    font-size: 17px;
+    color: rgba(255,255,255,0.85);
+    margin-bottom: 28px;
+    max-width: 480px;
+    line-height: 1.6;
+  }
+  .hero-btns { display: flex; gap: 12px; }
+  .btn-primary {
+    background: var(--coral);
+    color: white;
+    padding: 13px 28px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 15px;
+    transition: all 0.2s;
+    box-shadow: 0 4px 16px rgba(232,105,74,0.4);
+  }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(232,105,74,0.5); }
+  .btn-secondary {
+    background: rgba(255,255,255,0.15);
+    color: white;
+    padding: 13px 28px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 15px;
+    border: 1px solid rgba(255,255,255,0.4);
+    backdrop-filter: blur(4px);
+    transition: all 0.2s;
+  }
+  .btn-secondary:hover { background: rgba(255,255,255,0.25); }
+
+  /* FEATURES BAR */
+  .features-bar {
+    background: var(--ocean-dark);
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+    padding: 18px 40px;
+  }
+  .feature-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255,255,255,0.85);
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .feature-icon { font-size: 16px; }
+
+  /* SECTIONS */
+  .section { padding: 64px 40px; max-width: 1100px; margin: 0 auto; }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--ocean-dark);
+    margin-bottom: 8px;
+  }
+  .section-sub { color: var(--muted); font-size: 15px; margin-bottom: 36px; }
+
+  /* ROOMS GRID */
+  .rooms-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .room-card {
+    background: white;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .room-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.12); }
+  .room-img {
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+  }
+  .room-img.dorm { background: linear-gradient(135deg, #1a6b8a, #0f4a62); }
+  .room-img.private { background: linear-gradient(135deg, #2d8a6b, #1a5a45); }
+  .room-img.deluxe { background: linear-gradient(135deg, #8a4a1a, #5a2d0a); }
+  .room-body { padding: 16px; }
+  .room-name { font-weight: 600; font-size: 15px; margin-bottom: 4px; }
+  .room-desc { font-size: 13px; color: var(--muted); margin-bottom: 12px; line-height: 1.5; }
+  .room-price { font-size: 14px; font-weight: 600; color: var(--coral); }
+
+  /* AMENITIES */
+  .amenities-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .amenity {
+    background: white;
+    border-radius: 12px;
+    padding: 20px 16px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+  .amenity-icon { font-size: 28px; margin-bottom: 8px; }
+  .amenity-name { font-size: 13px; font-weight: 500; color: var(--text); }
+
+  /* LOCATION */
+  .location-section { background: white; padding: 64px 40px; }
+  .location-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+  .map-placeholder {
+    height: 280px;
+    background: linear-gradient(135deg, #d4e8f0, #a8d4e8);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 60px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  }
+  .location-info h3 { font-family: 'Playfair Display', serif; font-size: 24px; margin-bottom: 16px; color: var(--ocean-dark); }
+  .location-list { list-style: none; }
+  .location-list li { padding: 8px 0; font-size: 14px; color: var(--muted); border-bottom: 1px solid #f0f0f0; display: flex; gap: 10px; }
+  .location-list li:last-child { border-bottom: none; }
+
+  /* FOOTER */
+  footer {
+    background: var(--ocean-dark);
+    color: rgba(255,255,255,0.7);
+    text-align: center;
+    padding: 32px 40px;
+    font-size: 13px;
+    line-height: 1.8;
+  }
+  footer strong { color: white; }
+
+  /* NITEBOT WIDGET */
+  .chat-fab {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    z-index: 1000;
+  }
+  .chat-bubble-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #0099cc, #00d4ff);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(0,212,255,0.45);
+    transition: all 0.3s;
+    font-size: 11px;
+    font-weight: 700;
+    color: #06080f;
+    letter-spacing: 0.03em;
+    font-family: 'Inter', sans-serif;
+  }
+  .chat-bubble-btn:hover { transform: scale(1.08); box-shadow: 0 6px 28px rgba(0,212,255,0.6); }
+  .chat-pulse {
+    position: absolute;
+    top: -3px; right: -3px;
+    width: 14px; height: 14px;
+    background: #4ade80;
+    border-radius: 50%;
+    border: 2px solid white;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.7;transform:scale(1.1)} }
+  .chat-tooltip {
+    position: absolute;
+    bottom: 70px;
+    right: 0;
+    background: #0a1628;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 10px;
+    font-size: 13px;
+    white-space: nowrap;
+    font-family: 'Inter', sans-serif;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+    border: 1px solid rgba(0,212,255,0.2);
+    animation: fadeIn 0.3s ease;
+  }
+  .chat-tooltip::after {
+    content: '';
+    position: absolute;
+    bottom: -6px; right: 22px;
+    width: 12px; height: 12px;
+    background: #0a1628;
+    border-right: 1px solid rgba(0,212,255,0.2);
+    border-bottom: 1px solid rgba(0,212,255,0.2);
+    transform: rotate(45deg);
+  }
+  .chat-panel {
+    position: fixed;
+    bottom: 100px;
+    right: 28px;
+    width: 380px;
+    height: 580px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.3), 0 0 60px rgba(0,212,255,0.12);
+    display: none;
+    z-index: 999;
+    animation: slideUp 0.3s ease;
+    border: 1px solid rgba(0,212,255,0.2);
+  }
+  .chat-panel iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+  @keyframes slideUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">My Place <span>Guesthouse</span></div>
+  <ul class="nav-links">
+    <li><a href="#">Rooms</a></li>
+    <li><a href="#">Activities</a></li>
+    <li><a href="#">Location</a></li>
+    <li><a href="#">Gallery</a></li>
+  </ul>
+  <a href="#" class="nav-cta">Book Now</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">⭐ 4.8 · Tomari, Naha, Okinawa</div>
+  <h1>Your Home in Okinawa</h1>
+  <p>Steps from Tomari Port and the Kerama Islands ferry. The perfect base for exploring Okinawa.</p>
+  <div class="hero-btns">
+    <a href="#" class="btn-primary">Check Availability</a>
+    <a href="#" class="btn-secondary">Take a Tour</a>
+  </div>
+</div>
+
+<!-- FEATURES BAR -->
+<div class="features-bar">
+  <div class="feature-item"><span class="feature-icon">🛥️</span> 1 min from Kerama Ferry</div>
+  <div class="feature-item"><span class="feature-icon">🌐</span> 4 languages spoken</div>
+  <div class="feature-item"><span class="feature-icon">🅿️</span> Free private parking</div>
+  <div class="feature-item"><span class="feature-icon">🍳</span> Shared kitchen 24h</div>
+  <div class="feature-item"><span class="feature-icon">🤿</span> Dive & tour desk</div>
+</div>
+
+<!-- ROOMS -->
+<div class="section">
+  <div class="section-title">Rooms & Dormitories</div>
+  <div class="section-sub">Whether you're a solo traveler or a group — we have you covered.</div>
+  <div class="rooms-grid">
+    <div class="room-card">
+      <div class="room-img dorm">🛏️</div>
+      <div class="room-body">
+        <div class="room-name">Dormitory Bunk</div>
+        <div class="room-desc">Bunk beds with privacy curtains, reading light, and personal power socket. Harbor view available.</div>
+        <div class="room-price">From ¥3,500 / night</div>
+      </div>
+    </div>
+    <div class="room-card">
+      <div class="room-img private">🏠</div>
+      <div class="room-body">
+        <div class="room-name">Private Room</div>
+        <div class="room-desc">Your own space with en-suite or shared bathroom. Ideal for couples and families.</div>
+        <div class="room-price">From ¥8,500 / night</div>
+      </div>
+    </div>
+    <div class="room-card">
+      <div class="room-img deluxe">✨</div>
+      <div class="room-body">
+        <div class="room-name">Deluxe Twin</div>
+        <div class="room-desc">Two semi-double beds, sofa, full hotel amenities, and stunning harbor view.</div>
+        <div class="room-price">From ¥14,000 / night</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AMENITIES -->
+<div style="background: white; padding: 64px 0;">
+  <div class="section" style="padding-top: 0; padding-bottom: 0;">
+    <div class="section-title">Amenities</div>
+    <div class="section-sub">Everything you need for the perfect Okinawa stay.</div>
+    <div class="amenities-grid">
+      <div class="amenity"><div class="amenity-icon">📶</div><div class="amenity-name">Free WiFi</div></div>
+      <div class="amenity"><div class="amenity-icon">🏍️</div><div class="amenity-name">Bike Rental</div></div>
+      <div class="amenity"><div class="amenity-icon">☕</div><div class="amenity-name">Cafe & Bar</div></div>
+      <div class="amenity"><div class="amenity-icon">💻</div><div class="amenity-name">Coworking Space</div></div>
+      <div class="amenity"><div class="amenity-icon">🧺</div><div class="amenity-name">Laundry</div></div>
+      <div class="amenity"><div class="amenity-icon">🛁</div><div class="amenity-name">Shared Lounge</div></div>
+      <div class="amenity"><div class="amenity-icon">🤿</div><div class="amenity-name">Snorkel Rental</div></div>
+      <div class="amenity"><div class="amenity-icon">🧳</div><div class="amenity-name">Luggage Storage</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- LOCATION -->
+<div class="location-section">
+  <div class="location-inner">
+    <div class="map-placeholder">🗺️</div>
+    <div class="location-info">
+      <h3>Prime Location in Tomari</h3>
+      <ul class="location-list">
+        <li><span>🛥️</span> 1 min walk from Tomari Port (Kerama Islands ferry)</li>
+        <li><span>🚝</span> 15 min walk from Miebashi Station (Yui Rail)</li>
+        <li><span>✈️</span> 20 min by car from Naha Airport</li>
+        <li><span>🐟</span> 5 min walk to Tomari Fish Market</li>
+        <li><span>🏖️</span> Short walk to Naminoue Beach</li>
+        <li><span>🛍️</span> 20 min walk to Kokusai Dori</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <strong>My Place Guesthouse</strong><br>
+  Seasir Tomari Building, 3-1-8 Tomari, Naha, Okinawa 900-0012<br>
+  📞 +81 80-8569-2887 · ✉️ myplace-okinawa@seasir.com · 🌐 myplace-guesthouse.com<br><br>
+  <span style="font-size:11px;opacity:0.5;">AI Concierge powered by <strong style="color:rgba(0,212,255,0.7)">NiteBot</strong> · 24時間対応</span>
+</footer>
+
+<!-- NITEBOT FLOATING WIDGET -->
+<div class="chat-fab" id="chatFab">
+  <div class="chat-tooltip" id="tooltip">💬 Ask me anything!</div>
+  <button class="chat-bubble-btn" onclick="toggleChat()" id="fabBtn">NB</button>
+  <div class="chat-pulse"></div>
+</div>
+<div class="chat-panel" id="chatPanel">
+  <iframe src="/" id="chatFrame"></iframe>
+</div>
+
+<script>
+  let open = false;
+  let tooltipHidden = false;
+
+  setTimeout(() => {
+    const t = document.getElementById('tooltip');
+    if (!tooltipHidden) { t.style.opacity = '0'; t.style.transition = 'opacity 0.5s'; }
+  }, 4000);
+
+  function toggleChat() {
+    open = !open;
+    tooltipHidden = true;
+    document.getElementById('tooltip').style.display = 'none';
+    const panel = document.getElementById('chatPanel');
+    const btn = document.getElementById('fabBtn');
+    if (open) {
+      panel.style.display = 'block';
+      btn.textContent = '✕';
+    } else {
+      panel.style.display = 'none';
+      btn.textContent = 'NB';
+    }
+  }
+</script>
+</body>
+</html>`;
+
 const server = http.createServer((req, res) => {
   if (req.method === "GET" && req.url === "/") {
     res.writeHead(200, { "Content-Type": "text/html" });
     res.end(HTML_PAGE);
+    return;
+  }
+  if (req.method === "GET" && req.url === "/demo") {
+    res.writeHead(200, { "Content-Type": "text/html" });
+    res.end(DEMO_PAGE);
     return;
   }
   if (req.method === "POST" && req.url === "/chat") {
