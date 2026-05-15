@@ -514,8 +514,8 @@ const HTML_PAGE = `<!DOCTYPE html>
     <div class="message bot">
       <div class="msg-avatar">NB</div>
       <div class="msg-content">
-        <div class="bubble">Welcome to Okinawa Guesthouse! 🌺
-I'm your NiteBot concierge, available 24/7. Ask me anything about check-in, WiFi, directions, nearby restaurants, or house rules.
+        <div class="bubble">Welcome to My Place Guesthouse! 🌺
+I'm your NiteBot concierge, available 24/7. Ask me anything about check-in, WiFi, directions, nearby restaurants, or activities.
 Feel free to ask in English, 日本語, 한국어, or 中文!</div>
         <div class="msg-time">Just now</div>
       </div>
