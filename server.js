@@ -889,8 +889,8 @@ const DEMO_PAGE = `<!DOCTYPE html>
     z-index: 1000;
   }
   .chat-bubble-btn {
-    width: 60px;
-    height: 60px;
+    width: 62px;
+    height: 62px;
     border-radius: 50%;
     background: linear-gradient(135deg, #0099cc, #00d4ff);
     border: none;
@@ -900,12 +900,8 @@ const DEMO_PAGE = `<!DOCTYPE html>
     justify-content: center;
     box-shadow: 0 4px 20px rgba(0,212,255,0.45);
     transition: all 0.3s;
-    font-size: 11px;
-    font-weight: 700;
-    color: #06080f;
-    letter-spacing: 0.03em;
-    font-family: 'Inter', sans-serif;
   }
+  .chat-bubble-btn svg { width: 32px; height: 32px; }
   .chat-bubble-btn:hover { transform: scale(1.08); box-shadow: 0 6px 28px rgba(0,212,255,0.6); }
   .chat-pulse {
     position: absolute;
@@ -1078,7 +1074,29 @@ const DEMO_PAGE = `<!DOCTYPE html>
 <!-- NITEBOT FLOATING WIDGET -->
 <div class="chat-fab" id="chatFab">
   <div class="chat-tooltip" id="tooltip">💬 Ask me anything!</div>
-  <button class="chat-bubble-btn" onclick="toggleChat()" id="fabBtn">NB</button>
+  <button class="chat-bubble-btn" onclick="toggleChat()" id="fabBtn">
+    <svg id="fabIcon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Antenna -->
+      <line x1="20" y1="5" x2="20" y2="9" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+      <circle cx="20" cy="4" r="1.8" fill="white"/>
+      <!-- Head / speech bubble body -->
+      <rect x="7" y="9" width="26" height="18" rx="5" fill="white"/>
+      <!-- Speech bubble tail -->
+      <path d="M14 27 L12 33 L20 27 Z" fill="white"/>
+      <!-- Left ear -->
+      <rect x="4" y="14" width="3.5" height="7" rx="1.5" fill="white"/>
+      <!-- Right ear -->
+      <rect x="32.5" y="14" width="3.5" height="7" rx="1.5" fill="white"/>
+      <!-- Left eye -->
+      <circle cx="15" cy="18" r="2.5" fill="#0099cc"/>
+      <circle cx="15" cy="18" r="1" fill="white"/>
+      <!-- Right eye -->
+      <circle cx="25" cy="18" r="2.5" fill="#0099cc"/>
+      <circle cx="25" cy="18" r="1" fill="white"/>
+      <!-- Smile -->
+      <path d="M15.5 23 Q20 26.5 24.5 23" stroke="#0099cc" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+    </svg>
+  </button>
   <div class="chat-pulse"></div>
 </div>
 <div class="chat-panel" id="chatPanel">
@@ -1094,6 +1112,9 @@ const DEMO_PAGE = `<!DOCTYPE html>
     if (!tooltipHidden) { t.style.opacity = '0'; t.style.transition = 'opacity 0.5s'; }
   }, 4000);
 
+  const robotSVG = document.getElementById('fabBtn').innerHTML;
+  const closeSVG = '<svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="12" y1="12" x2="28" y2="28" stroke="white" stroke-width="2.5" stroke-linecap="round"/><line x1="28" y1="12" x2="12" y2="28" stroke="white" stroke-width="2.5" stroke-linecap="round"/></svg>';
+
   function toggleChat() {
     open = !open;
     tooltipHidden = true;
@@ -1102,10 +1123,10 @@ const DEMO_PAGE = `<!DOCTYPE html>
     const btn = document.getElementById('fabBtn');
     if (open) {
       panel.style.display = 'block';
-      btn.textContent = '✕';
+      btn.innerHTML = closeSVG;
     } else {
       panel.style.display = 'none';
-      btn.textContent = 'NB';
+      btn.innerHTML = robotSVG;
     }
   }
 </script>
