@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>お問い合わせ — NiteBot</title>
+  <link rel="stylesheet" href="/style.css"/>
+  <style>
+    .page-hero {
+      padding: 120px 24px 48px;
+      text-align: center;
+      max-width: 620px;
+      margin: 0 auto;
+    }
+    .contact-wrap {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 48px;
+      align-items: start;
+    }
+
+    /* ── Form ─────────────────────────────────────────────────────── */
+    .contact-form {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 36px;
+    }
+    .form-group { margin-bottom: 20px; }
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--silver);
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    .form-group label .en {
+      font-size: 0.75rem;
+      color: var(--muted);
+      font-weight: 400;
+      margin-left: 6px;
+    }
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 16px;
+      color: var(--white);
+      font-size: 0.95rem;
+      font-family: inherit;
+      outline: none;
+      transition: 0.2s;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      border-color: var(--cyan);
+      background: rgba(0,212,255,0.05);
+    }
+    .form-group textarea { resize: vertical; min-height: 130px; }
+    .form-group select option { background: var(--navy2); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-submit {
+      width: 100%;
+      padding: 14px;
+      background: var(--cyan);
+      color: var(--navy);
+      font-size: 1rem;
+      font-weight: 800;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.2s;
+      margin-top: 8px;
+    }
+    .form-submit:hover { background: #00bde0; transform: translateY(-2px); }
+    .form-note {
+      font-size: 0.78rem;
+      color: var(--muted);
+      text-align: center;
+      margin-top: 12px;
+    }
+    .success-msg {
+      display: none;
+      background: rgba(0,212,255,0.1);
+      border: 1px solid var(--cyan);
+      border-radius: 10px;
+      padding: 16px;
+      text-align: center;
+      color: var(--cyan);
+      margin-top: 16px;
+      font-size: 0.95rem;
+    }
+
+    /* ── Sidebar ──────────────────────────────────────────────────── */
+    .contact-sidebar { display: flex; flex-direction: column; gap: 20px; }
+    .sidebar-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+    }
+    .sidebar-card h3 {
+      font-size: 0.8rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--cyan);
+      margin-bottom: 16px;
+    }
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      text-decoration: none;
+      color: var(--silver);
+      font-size: 0.9rem;
+      transition: 0.2s;
+    }
+    .contact-item:last-child { border-bottom: none; }
+    .contact-item:hover { color: var(--cyan); }
+    .contact-item .icon {
+      width: 36px; height: 36px;
+      border-radius: 9px;
+      background: var(--cyan-bg);
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+    .founder-card {
+      text-align: center;
+      padding: 28px 24px;
+    }
+    .founder-avatar {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--navy2), var(--navy3));
+      border: 2px solid var(--cyan);
+      margin: 0 auto 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--cyan);
+    }
+    .founder-name { font-size: 1.05rem; font-weight: 700; margin-bottom: 4px; }
+    .founder-name-jp { font-size: 0.85rem; color: var(--muted); margin-bottom: 8px; }
+    .founder-role {
+      display: inline-block;
+      background: var(--cyan-bg);
+      border: 1px solid var(--border);
+      border-radius: 30px;
+      padding: 4px 14px;
+      font-size: 0.78rem;
+      color: var(--cyan);
+    }
+    .qr-card { text-align: center; }
+    .qr-placeholder {
+      width: 140px; height: 140px;
+      background: white;
+      border-radius: 10px;
+      margin: 12px auto;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .qr-placeholder img { width: 100%; height: 100%; object-fit: cover; }
+    .qr-label { font-size: 0.8rem; color: var(--muted); }
+
+    /* ── Response time bar ────────────────────────────────────────── */
+    .response-badge {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(0,212,255,0.06);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 0.85rem;
+      color: var(--silver);
+    }
+    .response-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #00ff88;
+      box-shadow: 0 0 8px #00ff88;
+      flex-shrink: 0;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%,100% { opacity: 1; }
+      50%      { opacity: 0.4; }
+    }
+
+    @media (max-width: 768px) {
+      .contact-wrap { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<canvas id="stars"></canvas>
+
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">Nite<span>Bot</span></a>
+    <button class="hamburger" id="hamburger">☰</button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="/">ホーム</a></li>
+      <li><a href="/pricing">料金</a></li>
+      <li><a href="/demo">デモ</a></li>
+      <li><a href="/contact" class="active">お問い合わせ</a></li>
+      <li><a href="/contact" class="btn nav-cta">無料相談</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+  <div class="page-hero">
+    <div class="section-label">CONTACT / お問い合わせ</div>
+    <h1 class="heading-jp">まずはお気軽にご連絡ください</h1>
+    <p class="heading-en" style="margin-top:10px">
+      Free consultation — we'll show you a demo tailored to your property.
+    </p>
+  </div>
+
+  <div class="contact-wrap">
+
+    <!-- Form -->
+    <div class="contact-form">
+      <h2 style="font-size:1.2rem;margin-bottom:24px">お問い合わせフォーム <span style="font-size:0.85rem;color:var(--muted);font-weight:400">/ Contact Form</span></h2>
+
+      <form id="contactForm" onsubmit="handleSubmit(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label>お名前 <span class="en">/ Name</span></label>
+            <input type="text" name="name" placeholder="山田 太郎" required/>
+          </div>
+          <div class="form-group">
+            <label>施設名 <span class="en">/ Property Name</span></label>
+            <input type="text" name="hotel" placeholder="〇〇ゲストハウス" required/>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>メールアドレス <span class="en">/ Email</span></label>
+            <input type="email" name="email" placeholder="you@example.com" required/>
+          </div>
+          <div class="form-group">
+            <label>電話番号 <span class="en">/ Phone</span></label>
+            <input type="tel" name="phone" placeholder="090-0000-0000"/>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>ご興味のあるプラン <span class="en">/ Plan of Interest</span></label>
+          <select name="plan">
+            <option value="">-- プランを選択 / Select a plan --</option>
+            <option value="starter">スターター — ¥9,800/月</option>
+            <option value="growth">グロース — ¥19,800/月（人気No.1）</option>
+            <option value="pro">プロ — ¥35,800/月</option>
+            <option value="unsure">まだ決まっていない / Not sure yet</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>メッセージ <span class="en">/ Message</span></label>
+          <textarea name="message" placeholder="ご質問やご要望などをお書きください。&#10;Feel free to write in English too!"></textarea>
+        </div>
+
+        <button type="submit" class="form-submit">送信する / Send Message →</button>
+        <div class="form-note">
+          送信後、24時間以内にご連絡いたします。<br>
+          <em>We'll reply within 24 hours.</em>
+        </div>
+        <div class="success-msg" id="successMsg">
+          ✓ 送信しました！24時間以内にご連絡いたします。<br>
+          <em style="font-size:0.85rem">Message sent! We'll be in touch within 24 hours.</em>
+        </div>
+      </form>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="contact-sidebar">
+
+      <!-- Founder -->
+      <div class="sidebar-card founder-card">
+        <div class="founder-avatar">AF</div>
+        <div class="founder-name">Auguste Fushi</div>
+        <div class="founder-name-jp">オーガスト　楓志</div>
+        <div class="founder-role">Founder, NiteBot</div>
+      </div>
+
+      <!-- Contact methods -->
+      <div class="sidebar-card">
+        <h3>DIRECT CONTACT</h3>
+        <a href="mailto:fushi1128auguste@gmail.com" class="contact-item">
+          <div class="icon">✉</div>
+          <div>
+            <div>fushi1128auguste@gmail.com</div>
+            <div style="font-size:0.78rem;color:var(--muted)">Email</div>
+          </div>
+        </a>
+        <a href="tel:07038035972" class="contact-item">
+          <div class="icon">📞</div>
+          <div>
+            <div>070-3803-5972</div>
+            <div style="font-size:0.78rem;color:var(--muted)">Phone / SMS</div>
+          </div>
+        </a>
+        <div class="contact-item" style="cursor:default">
+          <div class="icon">💬</div>
+          <div>
+            <div>LINE</div>
+            <div style="font-size:0.78rem;color:var(--muted)">QRコードでつながる / Scan QR below</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LINE QR -->
+      <div class="sidebar-card qr-card">
+        <h3>LINE QR コード</h3>
+        <div class="qr-placeholder">
+          <img src="/NiteBot_QR.png" alt="NiteBot QR Code" onerror="this.parentElement.innerHTML='<span style=\'font-size:0.75rem;color:#607a8a;padding:16px\'>QR code<br>coming soon</span>'"/>
+        </div>
+        <div class="qr-label">スキャンしてLINEで連絡 / Scan to contact via LINE</div>
+      </div>
+
+      <!-- Response time -->
+      <div class="response-badge">
+        <div class="response-dot"></div>
+        <span>通常24時間以内に返信します。<br><em style="font-size:0.8rem">We typically reply within 24 hours.</em></span>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo">Nite<span>Bot</span></div>
+      <div class="footer-tagline">「24時間、4言語で、おもてなし。」<br><em style="font-size:0.82rem">24/7 hospitality in 4 languages.</em></div>
+    </div>
+    <div>
+      <div class="footer-heading">PAGES</div>
+      <ul class="footer-links">
+        <li><a href="/">ホーム / Home</a></li>
+        <li><a href="/pricing">料金 / Pricing</a></li>
+        <li><a href="/demo">デモ / Demo</a></li>
+        <li><a href="/contact">お問い合わせ / Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-heading">CONTACT</div>
+      <ul class="footer-links">
+        <li><a href="mailto:fushi1128auguste@gmail.com">fushi1128auguste@gmail.com</a></li>
+        <li><a href="tel:07038035972">070-3803-5972</a></li>
+        <li style="color:var(--muted);font-size:0.9rem;margin-top:8px">Auguste Fushi — Founder<br>オーガスト　楓志</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 NiteBot. All rights reserved.</span>
+    <span>Okinawa, Japan 🌺</span>
+  </div>
+</footer>
+
+<script src="/main.js"></script>
+<script>
+function handleSubmit(e) {
+  e.preventDefault();
+  const form = document.getElementById("contactForm");
+  const data = new FormData(form);
+  const subject = encodeURIComponent("NiteBot お問い合わせ / Inquiry from " + (data.get("hotel") || "website"));
+  const body = encodeURIComponent(
+    "名前 / Name: " + data.get("name") + "\n" +
+    "施設名 / Hotel: " + data.get("hotel") + "\n" +
+    "メール / Email: " + data.get("email") + "\n" +
+    "電話 / Phone: " + data.get("phone") + "\n" +
+    "プラン / Plan: " + data.get("plan") + "\n\n" +
+    "メッセージ / Message:\n" + data.get("message")
+  );
+  window.location.href = "mailto:fushi1128auguste@gmail.com?subject=" + subject + "&body=" + body;
+  document.getElementById("successMsg").style.display = "block";
+  form.reset();
+}
+</script>
+</body>
+</html>

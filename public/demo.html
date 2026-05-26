@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>デモ — NiteBot</title>
+  <link rel="stylesheet" href="/style.css"/>
+  <style>
+    .demo-hero {
+      padding: 120px 24px 40px;
+      text-align: center;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+    .demo-instructions {
+      max-width: 680px;
+      margin: 0 auto 36px;
+      padding: 0 24px;
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 16px;
+    }
+    .demo-tip {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 16px;
+      text-align: center;
+    }
+    .demo-tip .tip-icon {
+      font-size: 1.5rem;
+      margin-bottom: 8px;
+    }
+    .demo-tip p {
+      font-size: 0.85rem;
+      color: var(--silver);
+      line-height: 1.5;
+    }
+    .demo-tip .en {
+      font-size: 0.76rem;
+      color: var(--muted);
+      margin-top: 4px;
+      font-style: italic;
+    }
+    .demo-lang-hint {
+      max-width: 680px;
+      margin: 0 auto 28px;
+      padding: 0 24px;
+      text-align: center;
+    }
+    .lang-pills {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+    .lang-pill {
+      background: var(--cyan-bg);
+      border: 1px solid var(--border);
+      border-radius: 30px;
+      padding: 6px 18px;
+      font-size: 0.85rem;
+      color: var(--cyan);
+    }
+    .iframe-wrap {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+      position: relative;
+    }
+    .iframe-wrap::before {
+      content: "";
+      position: absolute;
+      inset: -20px;
+      border-radius: 30px;
+      background: radial-gradient(ellipse at center, rgba(0,212,255,0.08), transparent 70%);
+      pointer-events: none;
+    }
+    iframe {
+      width: 100%;
+      height: 680px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: var(--navy);
+      box-shadow: 0 0 60px rgba(0,212,255,0.1);
+    }
+    .demo-cta {
+      text-align: center;
+      padding: 48px 24px 80px;
+    }
+    .demo-cta h2 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+    .demo-cta p {
+      color: var(--silver);
+      margin-bottom: 24px;
+      font-size: 0.95rem;
+    }
+    @media (max-width: 768px) {
+      .demo-instructions { grid-template-columns: 1fr; }
+      iframe { height: 580px; }
+    }
+  </style>
+</head>
+<body>
+<canvas id="stars"></canvas>
+
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">Nite<span>Bot</span></a>
+    <button class="hamburger" id="hamburger">☰</button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="/">ホーム</a></li>
+      <li><a href="/pricing">料金</a></li>
+      <li><a href="/demo" class="active">デモ</a></li>
+      <li><a href="/contact">お問い合わせ</a></li>
+      <li><a href="/contact" class="btn nav-cta">無料相談</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+  <div class="demo-hero">
+    <div class="section-label">LIVE DEMO / ライブデモ</div>
+    <h1 class="heading-jp">実際に試してみてください</h1>
+    <p class="heading-en" style="margin-top:10px">
+      This is a real NiteBot chatbot — type in any language and see how it responds.
+    </p>
+  </div>
+
+  <div class="demo-instructions">
+    <div class="demo-tip">
+      <div class="tip-icon">💬</div>
+      <p>「チェックインは何時ですか？」と入力してみてください</p>
+      <div class="en">Try: "What time is check-in?"</div>
+    </div>
+    <div class="demo-tip">
+      <div class="tip-icon">🌐</div>
+      <p>英語・韓国語・中国語でも話しかけてみてください</p>
+      <div class="en">Try sending a message in Korean or Chinese</div>
+    </div>
+    <div class="demo-tip">
+      <div class="tip-icon">🏨</div>
+      <p>「WiFiのパスワードは？」「近くの観光地は？」など</p>
+      <div class="en">Ask about WiFi, local sights, restaurants, etc.</div>
+    </div>
+  </div>
+
+  <div class="demo-lang-hint">
+    <p style="font-size:0.85rem;color:var(--muted)">対応言語 / Supported Languages</p>
+    <div class="lang-pills">
+      <span class="lang-pill">🇯🇵 日本語</span>
+      <span class="lang-pill">🇬🇧 English</span>
+      <span class="lang-pill">🇰🇷 한국어</span>
+      <span class="lang-pill">🇨🇳 中文</span>
+    </div>
+  </div>
+
+  <div class="iframe-wrap">
+    <iframe
+      src="https://hotel-bot-production-648f.up.railway.app"
+      title="NiteBot Live Demo"
+      frameborder="0"
+      allow="clipboard-write"
+    ></iframe>
+  </div>
+
+  <div class="demo-cta">
+    <h2>あなたの施設にも導入しませんか？</h2>
+    <p>このデモはサンプル施設で動いています。あなたの施設の情報でカスタマイズできます。<br>
+      <em style="font-size:0.85rem">This demo runs on sample hotel data — your property gets fully customized info.</em>
+    </p>
+    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
+      <a href="/contact" class="btn btn-primary">無料相談する</a>
+      <a href="/pricing" class="btn btn-outline">料金を見る</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo">Nite<span>Bot</span></div>
+      <div class="footer-tagline">「24時間、4言語で、おもてなし。」<br><em style="font-size:0.82rem">24/7 hospitality in 4 languages.</em></div>
+    </div>
+    <div>
+      <div class="footer-heading">PAGES</div>
+      <ul class="footer-links">
+        <li><a href="/">ホーム / Home</a></li>
+        <li><a href="/pricing">料金 / Pricing</a></li>
+        <li><a href="/demo">デモ / Demo</a></li>
+        <li><a href="/contact">お問い合わせ / Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-heading">CONTACT</div>
+      <ul class="footer-links">
+        <li><a href="mailto:fushi1128auguste@gmail.com">fushi1128auguste@gmail.com</a></li>
+        <li><a href="tel:07038035972">070-3803-5972</a></li>
+        <li style="color:var(--muted);font-size:0.9rem;margin-top:8px">Auguste Fushi — Founder<br>オーガスト　楓志</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 NiteBot. All rights reserved.</span>
+    <span>Okinawa, Japan 🌺</span>
+  </div>
+</footer>
+
+<script src="/main.js"></script>
+</body>
+</html>

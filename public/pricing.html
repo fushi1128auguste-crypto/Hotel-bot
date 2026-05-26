@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>料金プラン — NiteBot</title>
+  <link rel="stylesheet" href="/style.css"/>
+  <style>
+    .page-hero {
+      padding: 120px 24px 60px;
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    /* ── Waiver Banner ─────────────────────────────────────────────── */
+    .waiver-banner {
+      background: linear-gradient(90deg, rgba(0,212,255,0.1), rgba(0,150,180,0.15), rgba(0,212,255,0.1));
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 28px;
+      text-align: center;
+      margin: 0 24px 48px;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .waiver-banner strong { color: var(--cyan); }
+    .waiver-banner p { font-size: 0.92rem; color: var(--silver); margin-top: 4px; }
+
+    /* ── Plans ─────────────────────────────────────────────────────── */
+    .plans-wrap {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 24px;
+      align-items: start;
+    }
+    .plan-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 32px 24px;
+      position: relative;
+      transition: 0.25s;
+    }
+    .plan-card:hover { transform: translateY(-4px); }
+    .plan-card.featured {
+      border-color: var(--cyan);
+      background: rgba(0,212,255,0.06);
+      box-shadow: 0 0 40px rgba(0,212,255,0.12);
+    }
+    .plan-badge {
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--cyan);
+      color: var(--navy);
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      padding: 5px 18px;
+      border-radius: 30px;
+      white-space: nowrap;
+    }
+    .plan-name-jp { font-size: 1.4rem; font-weight: 700; margin-bottom: 4px; }
+    .plan-name-en { font-size: 0.82rem; color: var(--muted); margin-bottom: 24px; }
+    .plan-price {
+      font-size: 3rem;
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1;
+    }
+    .plan-price span { font-size: 1rem; font-weight: 400; color: var(--muted); }
+    .plan-setup {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin: 8px 0 24px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+    .plan-setup s { color: rgba(255,255,255,0.3); }
+    .plan-setup .free { color: var(--cyan); font-weight: 700; }
+    .plan-features { list-style: none; margin-bottom: 28px; }
+    .plan-features li {
+      font-size: 0.9rem;
+      color: var(--silver);
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      line-height: 1.5;
+    }
+    .plan-features li::before { content: "✓"; color: var(--cyan); flex-shrink: 0; }
+    .plan-features li .en { display: block; font-size: 0.76rem; color: var(--muted); }
+    .plan-cta { display: block; text-align: center; }
+
+    /* ── Add-ons ──────────────────────────────────────────────────── */
+    .addons-wrap {
+      max-width: 1000px;
+      margin: 72px auto 0;
+      padding: 0 24px;
+    }
+    .addons-grid {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 18px;
+      margin-top: 36px;
+    }
+    .addon-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
+    }
+    .addon-price { font-size: 1.3rem; font-weight: 700; color: var(--cyan); margin-bottom: 6px; }
+    .addon-name-jp { font-size: 0.95rem; font-weight: 600; margin-bottom: 4px; }
+    .addon-name-en { font-size: 0.78rem; color: var(--muted); }
+
+    /* ── FAQ ──────────────────────────────────────────────────────── */
+    .faq-wrap {
+      max-width: 720px;
+      margin: 72px auto 0;
+      padding: 0 24px;
+    }
+    .faq-item {
+      border-bottom: 1px solid var(--border);
+      padding: 20px 0;
+    }
+    .faq-q { font-weight: 600; margin-bottom: 10px; cursor: pointer; display: flex; justify-content: space-between; }
+    .faq-q::after { content: "+"; color: var(--cyan); }
+    .faq-a { font-size: 0.9rem; color: var(--silver); line-height: 1.7; }
+    .faq-a .en { font-size: 0.82rem; color: var(--muted); font-style: italic; margin-top: 6px; }
+
+    @media (max-width: 768px) {
+      .plans-wrap { grid-template-columns: 1fr; }
+      .addons-grid { grid-template-columns: 1fr; }
+      .plan-card.featured { margin-top: 16px; }
+    }
+  </style>
+</head>
+<body>
+<canvas id="stars"></canvas>
+
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">Nite<span>Bot</span></a>
+    <button class="hamburger" id="hamburger">☰</button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="/">ホーム</a></li>
+      <li><a href="/pricing" class="active">料金</a></li>
+      <li><a href="/demo">デモ</a></li>
+      <li><a href="/contact">お問い合わせ</a></li>
+      <li><a href="/contact" class="btn nav-cta">無料相談</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+  <div class="page-hero">
+    <div class="section-label">PRICING / 料金</div>
+    <h1 class="heading-jp">シンプルな料金体系</h1>
+    <p class="heading-en">No hidden fees. Cancel anytime after 3 months.</p>
+  </div>
+
+  <!-- Waiver Banner -->
+  <div class="waiver-banner">
+    ⚡ <strong>期間限定：2週間以内のご契約で初期設定費用が無料！</strong>
+    <p>Setup fee waived if you sign within 14 days of receiving your proposal.</p>
+  </div>
+
+  <!-- Plans -->
+  <div class="plans-wrap">
+
+    <!-- Starter -->
+    <div class="plan-card">
+      <div class="plan-name-jp">スターター</div>
+      <div class="plan-name-en">Starter Plan</div>
+      <div class="plan-price">¥9,800<span>/月</span></div>
+      <div class="plan-setup">
+        初期設定費用 <s>¥8,000</s> → <span class="free">期間限定 無料</span>
+        <div class="en">Setup fee: ¥8,000 (waived for limited time)</div>
+      </div>
+      <ul class="plan-features">
+        <li>LINE対応チャットボット<div class="en">LINE Business chatbot</div></li>
+        <li>英語・日本語対応<div class="en">English + Japanese</div></li>
+        <li>月300通まで<div class="en">Up to 300 messages/month</div></li>
+        <li>ナレッジベース設定<div class="en">Knowledge base setup</div></li>
+        <li>48時間以内に稼働開始<div class="en">Live within 48 hours</div></li>
+      </ul>
+      <a href="/contact" class="btn btn-outline plan-cta">このプランで相談する</a>
+    </div>
+
+    <!-- Growth (featured) -->
+    <div class="plan-card featured">
+      <div class="plan-badge">人気 No.1</div>
+      <div class="plan-name-jp" style="color:var(--cyan)">グロース</div>
+      <div class="plan-name-en">Growth Plan</div>
+      <div class="plan-price">¥19,800<span>/月</span></div>
+      <div class="plan-setup">
+        初期設定費用 <s>¥15,000</s> → <span class="free">期間限定 無料</span>
+        <div class="en">Setup fee: ¥15,000 (waived for limited time)</div>
+      </div>
+      <ul class="plan-features">
+        <li>LINE＋ウェブサイト対応<div class="en">LINE + website widget</div></li>
+        <li>4言語対応（英・日・韓・中）<div class="en">4 languages (EN/JP/KO/ZH)</div></li>
+        <li>メッセージ無制限<div class="en">Unlimited messages</div></li>
+        <li>ナレッジベース設定・更新<div class="en">Knowledge base setup + updates</div></li>
+        <li>48時間以内に稼働開始<div class="en">Live within 48 hours</div></li>
+        <li>月次レポート（オプション）<div class="en">Monthly report (optional add-on)</div></li>
+      </ul>
+      <a href="/contact" class="btn btn-primary plan-cta">このプランで相談する</a>
+    </div>
+
+    <!-- Pro -->
+    <div class="plan-card">
+      <div class="plan-name-jp">プロ</div>
+      <div class="plan-name-en">Pro Plan</div>
+      <div class="plan-price">¥35,800<span>/月</span></div>
+      <div class="plan-setup">
+        初期設定費用 <s>¥25,000</s> → <span class="free">期間限定 無料</span>
+        <div class="en">Setup fee: ¥25,000 (waived for limited time)</div>
+      </div>
+      <ul class="plan-features">
+        <li>グロースの全機能<div class="en">Everything in Growth</div></li>
+        <li>言語追加オプション無制限<div class="en">Unlimited language add-ons</div></li>
+        <li>2施設まで対応<div class="en">Up to 2 properties</div></li>
+        <li>Instagram自動返信<div class="en">Instagram auto-reply</div></li>
+        <li>優先サポート対応<div class="en">Priority support</div></li>
+        <li>月次PDFレポート付き<div class="en">Monthly PDF report included</div></li>
+      </ul>
+      <a href="/contact" class="btn btn-outline plan-cta">このプランで相談する</a>
+    </div>
+
+  </div>
+
+  <!-- Add-ons -->
+  <div class="addons-wrap">
+    <div class="section-label">ADD-ONS / オプション</div>
+    <h2 class="heading-jp">必要なものだけ追加できます</h2>
+    <p class="heading-en">Customize your plan with optional add-ons.</p>
+    <div class="addons-grid">
+      <div class="addon-card">
+        <div class="addon-price">+¥2,000<small style="font-size:0.8rem;font-weight:400;color:var(--muted)">/月・言語</small></div>
+        <div class="addon-name-jp">追加言語</div>
+        <div class="addon-name-en">Additional Language / per language per month</div>
+      </div>
+      <div class="addon-card">
+        <div class="addon-price">+¥5,000<small style="font-size:0.8rem;font-weight:400;color:var(--muted)">/月</small></div>
+        <div class="addon-name-jp">Instagram自動返信</div>
+        <div class="addon-name-en">Instagram Auto-Reply / per month</div>
+      </div>
+      <div class="addon-card">
+        <div class="addon-price">+¥2,000<small style="font-size:0.8rem;font-weight:400;color:var(--muted)">/月</small></div>
+        <div class="addon-name-jp">月次PDFレポート</div>
+        <div class="addon-name-en">Monthly PDF Performance Report / per month</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="faq-wrap" style="margin-bottom:80px">
+    <div class="section-label" style="margin-top:72px">FAQ</div>
+    <h2 class="heading-jp">よくある質問</h2>
+    <div style="margin-top:32px">
+      <div class="faq-item">
+        <div class="faq-q">最低契約期間はありますか？</div>
+        <div class="faq-a">最低3ヶ月のご契約をお願いしております。その後は30日前のご連絡で解約可能です。
+          <div class="en">Minimum 3-month term. Cancel anytime after with 30 days' notice.</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">導入にどのくらいかかりますか？</div>
+        <div class="faq-a">施設情報をご提供いただいてから48時間以内に稼働開始できます。技術的な知識は不要です。
+          <div class="en">We go live within 48 hours of receiving your hotel info. No tech skills needed.</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">情報の更新はできますか？</div>
+        <div class="faq-a">メールでご連絡いただければ、48時間以内に更新いたします。
+          <div class="en">Send us an email and we'll update your knowledge base within 48 hours.</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">どのプランがおすすめですか？</div>
+        <div class="faq-a">外国人ゲストが多い施設には「グロース」プランがおすすめです。4言語対応かつウェブサイトにも設置できます。
+          <div class="en">Growth is our most popular plan — 4 languages, LINE + website, unlimited messages.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo">Nite<span>Bot</span></div>
+      <div class="footer-tagline">「24時間、4言語で、おもてなし。」<br><em style="font-size:0.82rem">24/7 hospitality in 4 languages.</em></div>
+    </div>
+    <div>
+      <div class="footer-heading">PAGES</div>
+      <ul class="footer-links">
+        <li><a href="/">ホーム / Home</a></li>
+        <li><a href="/pricing">料金 / Pricing</a></li>
+        <li><a href="/demo">デモ / Demo</a></li>
+        <li><a href="/contact">お問い合わせ / Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-heading">CONTACT</div>
+      <ul class="footer-links">
+        <li><a href="mailto:fushi1128auguste@gmail.com">fushi1128auguste@gmail.com</a></li>
+        <li><a href="tel:07038035972">070-3803-5972</a></li>
+        <li style="color:var(--muted);font-size:0.9rem;margin-top:8px">Auguste Fushi — Founder<br>オーガスト　楓志</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 NiteBot. All rights reserved.</span>
+    <span>Okinawa, Japan 🌺</span>
+  </div>
+</footer>
+
+<script src="/main.js"></script>
+</body>
+</html>

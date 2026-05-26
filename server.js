@@ -1,5 +1,7 @@
 const http = require("http");
 const https = require("https");
+const fs = require("fs");
+const path = require("path");
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY || "";
 const PORT = process.env.PORT || 3000;
 
@@ -1075,17 +1077,60 @@ const DEMO_PAGE = `<!DOCTYPE html>
 </body>
 </html>`;
 
+// ── Static file helper ────────────────────────────────────────────────────
+const MIME = {
+  ".html": "text/html",
+  ".css":  "text/css",
+  ".js":   "application/javascript",
+  ".png":  "image/png",
+  ".jpg":  "image/jpeg",
+  ".ico":  "image/x-icon",
+  ".svg":  "image/svg+xml",
+};
+function serveFile(res, filePath) {
+  fs.readFile(filePath, (err, data) => {
+    if (err) { res.writeHead(404); res.end("Not found"); return; }
+    const ext = path.extname(filePath);
+    res.writeHead(200, { "Content-Type": MIME[ext] || "text/plain" });
+    res.end(data);
+  });
+}
+const PUBLIC = path.join(__dirname, "public");
+
 const server = http.createServer((req, res) => {
-  if (req.method === "GET" && req.url === "/") {
+  const url = req.url.split("?")[0]; // strip query strings
+
+  // ── Website pages ───────────────────────────────────────────────────────
+  if (req.method === "GET" && url === "/") {
+    serveFile(res, path.join(PUBLIC, "index.html"));
+    return;
+  }
+  if (req.method === "GET" && url === "/pricing") {
+    serveFile(res, path.join(PUBLIC, "pricing.html"));
+    return;
+  }
+  if (req.method === "GET" && url === "/demo") {
+    serveFile(res, path.join(PUBLIC, "demo.html"));
+    return;
+  }
+  if (req.method === "GET" && url === "/contact") {
+    serveFile(res, path.join(PUBLIC, "contact.html"));
+    return;
+  }
+
+  // ── Static assets (CSS, JS, images) ────────────────────────────────────
+  if (req.method === "GET" && (url === "/style.css" || url === "/main.js" || url.startsWith("/NiteBot_"))) {
+    serveFile(res, path.join(PUBLIC, url));
+    return;
+  }
+
+  // ── Chatbot (kept at /bot for direct access) ────────────────────────────
+  if (req.method === "GET" && url === "/bot") {
     res.writeHead(200, { "Content-Type": "text/html" });
     res.end(HTML_PAGE);
     return;
   }
-  if (req.method === "GET" && req.url === "/demo") {
-    res.writeHead(200, { "Content-Type": "text/html" });
-    res.end(DEMO_PAGE);
-    return;
-  }
+
   if (req.method === "POST" && req.url === "/chat") {
     let body = "";
     req.on("data", chunk => body += chunk);
