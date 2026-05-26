@@ -1119,7 +1119,7 @@ const server = http.createServer((req, res) => {
   }
 
   // ── Static assets (CSS, JS, images) ────────────────────────────────────
-  if (req.method === "GET" && (url === "/style.css" || url === "/main.js" || url.startsWith("/NiteBot_"))) {
+  if (req.method === "GET" && (url === "/style.css" || url === "/main.js" || url === "/logo.png" || url.startsWith("/NiteBot_"))) {
     serveFile(res, path.join(PUBLIC, url));
     return;
   }
