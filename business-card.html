@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>NiteBot Business Card</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #111;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      font-family: 'Inter', sans-serif;
+      gap: 24px;
+      padding: 40px;
+    }
+
+    .hint {
+      color: #607a8a;
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+    }
+
+    /* ── Card ── */
+    .card {
+      width: 1050px;
+      height: 590px;
+      background: #0a1628;
+      border-radius: 18px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: stretch;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+    }
+
+    /* Diagonal lines background */
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: repeating-linear-gradient(
+        135deg,
+        rgba(0, 180, 220, 0.07) 0px,
+        rgba(0, 180, 220, 0.07) 1px,
+        transparent 1px,
+        transparent 28px
+      );
+      pointer-events: none;
+    }
+
+    /* Left content area */
+    .card-left {
+      flex: 1;
+      padding: 44px 48px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Logo row */
+    .logo-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .logo-icon {
+      width: 64px;
+      height: 64px;
+      background: #0f2035;
+      border: 2px solid #1a3a55;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+    }
+    .logo-text-block { display: flex; flex-direction: column; }
+    .logo-name {
+      font-size: 2.1rem;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1;
+    }
+    .logo-name span { color: #00d4ff; }
+    .logo-sub {
+      font-size: 0.92rem;
+      color: #607a8a;
+      margin-top: 4px;
+      font-weight: 400;
+      letter-spacing: 0.5px;
+    }
+
+    /* Divider */
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, #1a3a55, transparent);
+      margin: 6px 0;
+    }
+
+    /* Name section */
+    .name-section { display: flex; flex-direction: column; gap: 6px; }
+    .name-en {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.5px;
+      line-height: 1;
+    }
+    .name-jp {
+      font-size: 1.2rem;
+      color: #00d4ff;
+      font-weight: 500;
+      letter-spacing: 2px;
+    }
+    .role-badge {
+      display: inline-block;
+      background: rgba(0, 212, 255, 0.15);
+      border: 1px solid rgba(0, 212, 255, 0.4);
+      border-radius: 30px;
+      padding: 6px 20px;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #00d4ff;
+      letter-spacing: 1px;
+      margin-top: 4px;
+      width: fit-content;
+    }
+
+    /* Contact info */
+    .contact-info { display: flex; flex-direction: column; gap: 14px; }
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      color: #e0eaf0;
+      font-size: 1.18rem;
+      font-weight: 500;
+    }
+    .contact-icon {
+      width: 34px;
+      height: 34px;
+      background: rgba(0, 212, 255, 0.1);
+      border: 1px solid rgba(0, 212, 255, 0.25);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+
+    /* Right QR area */
+    .card-right {
+      width: 260px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 32px;
+      position: relative;
+      z-index: 1;
+    }
+    .qr-box {
+      background: #fff;
+      border-radius: 16px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+    }
+    .qr-box img {
+      width: 160px;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+    .qr-placeholder {
+      width: 160px;
+      height: 160px;
+      background: #eef2f5;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      color: #999;
+      text-align: center;
+      padding: 10px;
+    }
+    .qr-label {
+      font-size: 0.9rem;
+      color: #607a8a;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    /* Bottom bar */
+    .bottom-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 52px;
+      background: linear-gradient(90deg, #007a99, #00aac8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.05rem;
+      color: rgba(255,255,255,0.95);
+      font-weight: 500;
+      letter-spacing: 0.5px;
+    }
+
+    /* Print button */
+    .print-btn {
+      background: #00d4ff;
+      color: #0a1628;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 32px;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      letter-spacing: 0.5px;
+    }
+    .print-btn:hover { background: #00bde0; }
+
+    @media print {
+      body { background: white; padding: 0; min-height: unset; }
+      .hint, .print-btn { display: none; }
+      .card { box-shadow: none; border-radius: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<p class="hint">NITEBOT — BUSINESS CARD</p>
+
+<div class="card">
+  <div class="card-left">
+
+    <!-- Logo -->
+    <div class="logo-row">
+      <div class="logo-icon">🤖</div>
+      <div class="logo-text-block">
+        <div class="logo-name">Nite<span>Bot</span></div>
+        <div class="logo-sub">AI Hotel Concierge Platform</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Name -->
+    <div class="name-section">
+      <div class="name-en">Auguste Fushi</div>
+      <div class="name-jp">オーガスト　楓志</div>
+      <div class="role-badge">Founder</div>
+    </div>
+
+    <!-- Contact -->
+    <div class="contact-info">
+      <div class="contact-row">
+        <div class="contact-icon">✉</div>
+        hello@nitebot.net
+      </div>
+      <div class="contact-row">
+        <div class="contact-icon">📞</div>
+        070-3803-5972
+      </div>
+    </div>
+
+  </div>
+
+  <!-- QR -->
+  <div class="card-right">
+    <div class="qr-box">
+      <img
+        src="/public/NiteBot_QR.png"
+        alt="NiteBot QR Code"
+        onerror="this.outerHTML='<div class=\'qr-placeholder\'>QR Code<br>nitebot.net/demo</div>'"
+      />
+      <div class="qr-label">Scan for live demo</div>
+    </div>
+  </div>
+
+  <!-- Bottom tagline -->
+  <div class="bottom-bar">「スタッフが眠る間も、NiteBotが働く。」</div>
+</div>
+
+<button class="print-btn" onclick="window.print()">🖨 Print / Save as PDF</button>
+
+</body>
+</html>
