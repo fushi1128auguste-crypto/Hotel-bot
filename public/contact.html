@@ -5,6 +5,20 @@
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <meta name="google-site-verification" content="AqCsIwaTIfavGW2xci7NRH4i9jKj14nfn9EX80JWFH4" />
   <title>お問い合わせ — NiteBot</title>
+  <meta name="description" content="NiteBotへのお問い合わせ・無料相談はこちら。あなたの施設に合わせたデモをご用意します。通常24時間以内に返信します。"/>
+
+  <!-- Open Graph / social share -->
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://nitebot.net/contact"/>
+  <meta property="og:title" content="お問い合わせ — NiteBot"/>
+  <meta property="og:description" content="無料相談はこちら。あなたの施設に合わせたデモをご用意します。"/>
+  <meta property="og:image" content="https://nitebot.net/logo.png"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="お問い合わせ — NiteBot"/>
+  <meta name="twitter:description" content="無料相談はこちら。24時間以内に返信します。"/>
+  <meta name="twitter:image" content="https://nitebot.net/logo.png"/>
+
+  <link rel="icon" type="image/png" href="/logo.png"/>
   <link rel="stylesheet" href="/style.css"/>
   <style>
     .page-hero {
@@ -237,7 +251,7 @@
     <div class="contact-form">
       <h2 style="font-size:1.2rem;margin-bottom:24px">お問い合わせフォーム <span style="font-size:0.85rem;color:var(--muted);font-weight:400">/ Contact Form</span></h2>
 
-      <form id="contactForm" onsubmit="handleSubmit(event)">
+      <form id="contactForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" onsubmit="handleSubmit(event)">
         <div class="form-row">
           <div class="form-group">
             <label>お名前 <span class="en">/ Name</span></label>
@@ -376,22 +390,47 @@
 
 <script src="/main.js"></script>
 <script>
-function handleSubmit(e) {
+async function handleSubmit(e) {
   e.preventDefault();
   const form = document.getElementById("contactForm");
+  const btn = form.querySelector(".form-submit");
+  const successMsg = document.getElementById("successMsg");
   const data = new FormData(form);
-  const subject = encodeURIComponent("NiteBot お問い合わせ / Inquiry from " + (data.get("hotel") || "website"));
-  const body = encodeURIComponent(
-    "名前 / Name: " + data.get("name") + "\n" +
-    "施設名 / Hotel: " + data.get("hotel") + "\n" +
-    "メール / Email: " + data.get("email") + "\n" +
-    "電話 / Phone: " + data.get("phone") + "\n" +
-    "プラン / Plan: " + data.get("plan") + "\n\n" +
-    "メッセージ / Message:\n" + data.get("message")
-  );
-  window.location.href = "mailto:hello@nitebot.net?subject=" + subject + "&body=" + body;
-  document.getElementById("successMsg").style.display = "block";
-  form.reset();
+
+  const original = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = "送信中... / Sending...";
+
+  try {
+    const res = await fetch(form.action, {
+      method: "POST",
+      body: data,
+      headers: { "Accept": "application/json" }
+    });
+
+    if (res.ok) {
+      successMsg.style.display = "block";
+      form.reset();
+      successMsg.scrollIntoView({ behavior: "smooth", block: "center" });
+    } else {
+      throw new Error("Submission failed");
+    }
+  } catch (err) {
+    // Fallback to email if Formspree is unreachable
+    const subject = encodeURIComponent("NiteBot お問い合わせ / Inquiry from " + (data.get("hotel") || "website"));
+    const body = encodeURIComponent(
+      "名前 / Name: " + data.get("name") + "\n" +
+      "施設名 / Hotel: " + data.get("hotel") + "\n" +
+      "メール / Email: " + data.get("email") + "\n" +
+      "電話 / Phone: " + data.get("phone") + "\n" +
+      "プラン / Plan: " + data.get("plan") + "\n\n" +
+      "メッセージ / Message:\n" + data.get("message")
+    );
+    window.location.href = "mailto:hello@nitebot.net?subject=" + subject + "&body=" + body;
+  } finally {
+    btn.disabled = false;
+    btn.textContent = original;
+  }
 }
 </script>
 </body>

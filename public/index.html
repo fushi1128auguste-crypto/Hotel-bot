@@ -5,6 +5,20 @@
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <meta name="google-site-verification" content="AqCsIwaTIfavGW2xci7NRH4i9jKj14nfn9EX80JWFH4" />
   <title>NiteBot — AIホテルコンシェルジュ</title>
+  <meta name="description" content="NiteBotは、ホテル・ゲストハウス向けのAIコンシェルジュ。英語・日本語・韓国語・中国語で24時間自動対応。48時間で導入、技術知識は不要です。"/>
+
+  <!-- Open Graph / social share -->
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://nitebot.net/"/>
+  <meta property="og:title" content="NiteBot — AIホテルコンシェルジュ"/>
+  <meta property="og:description" content="スタッフが眠る間も、NiteBotが働く。4言語で24時間ゲスト対応。48時間で導入。"/>
+  <meta property="og:image" content="https://nitebot.net/logo.png"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="NiteBot — AIホテルコンシェルジュ"/>
+  <meta name="twitter:description" content="スタッフが眠る間も、NiteBotが働く。4言語で24時間ゲスト対応。"/>
+  <meta name="twitter:image" content="https://nitebot.net/logo.png"/>
+
+  <link rel="icon" type="image/png" href="/logo.png"/>
   <link rel="stylesheet" href="/style.css"/>
   <style>
     /* ── Hero ────────────────────────────────────────────────────────── */
@@ -147,16 +161,59 @@
     .feature-card p  { font-size: 0.87rem; color: var(--silver); line-height: 1.6; }
     .feature-card .en { font-size: 0.78rem; color: var(--muted); margin-top: 4px; }
 
-    /* ── Testimonials ────────────────────────────────────────────────── */
-    .testimonials-wrap { margin-top: 48px; }
-    .testimonial-placeholder {
-      border: 1px dashed var(--border);
-      border-radius: var(--radius);
-      padding: 48px;
-      text-align: center;
-      color: var(--muted);
+    /* ── Founder's Note ──────────────────────────────────────────────── */
+    .founder-note {
+      margin-top: 48px;
+      max-width: 880px;
+      margin-left: auto;
+      margin-right: auto;
+      display: flex;
+      gap: 32px;
+      align-items: flex-start;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 40px;
     }
-    .testimonial-placeholder span { font-size: 2rem; display: block; margin-bottom: 12px; }
+    .founder-note-avatar {
+      width: 84px; height: 84px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--navy2), var(--navy3));
+      border: 2px solid var(--cyan);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--cyan);
+    }
+    .founder-note-body { flex: 1; }
+    .founder-note-text {
+      font-size: 1rem;
+      color: var(--silver);
+      line-height: 1.9;
+      margin-bottom: 16px;
+    }
+    .founder-note-text.en {
+      font-size: 0.9rem;
+      color: var(--muted);
+      font-style: italic;
+      line-height: 1.8;
+    }
+    .founder-note-sign { margin-top: 20px; }
+    .founder-note-name {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--white);
+    }
+    .founder-note-name span { font-size: 0.85rem; color: var(--muted); font-weight: 400; margin-left: 8px; }
+    .founder-note-role {
+      font-size: 0.85rem;
+      color: var(--cyan);
+      margin-top: 2px;
+    }
+    @media (max-width: 768px) {
+      .founder-note { flex-direction: column; align-items: center; text-align: center; padding: 32px 24px; gap: 20px; }
+    }
 
     /* ── CTA Banner ──────────────────────────────────────────────────── */
     .cta-banner {
@@ -371,15 +428,32 @@
 
 <div class="divider"></div>
 
-<!-- ── Testimonials ───────────────────────────────────────────────────────── -->
+<!-- ── Founder's Note ─────────────────────────────────────────────────────── -->
 <section data-reveal>
-  <div class="section-label">TESTIMONIALS / お客様の声</div>
-  <h2 class="heading-jp">導入施設からの声</h2>
-  <p class="heading-en">What hotel owners are saying.</p>
-  <div class="testimonials-wrap">
-    <div class="testimonial-placeholder">
-      <span>💬</span>
-      <p>お客様の声を準備中です。<br><span style="font-size:0.85rem;font-style:italic">Customer testimonials coming soon.</span></p>
+  <div class="section-label">FROM THE FOUNDER / 創業者より</div>
+  <h2 class="heading-jp">沖縄から、世界中のゲストへ。</h2>
+  <p class="heading-en">Built in Okinawa, for the hotels of Okinawa.</p>
+
+  <div class="founder-note">
+    <div class="founder-note-avatar">AF</div>
+    <div class="founder-note-body">
+      <p class="founder-note-text">
+        沖縄には、世界中から訪れるゲストと、それを温かく迎える小さな宿がたくさんあります。
+        でも、深夜の問い合わせや多言語対応は、少人数のスタッフには大きな負担です。
+        NiteBotは、その「眠れない時間」を引き受けるために生まれました。
+        あなたの施設が、おもてなしの本質に集中できるように。まずは私に直接ご相談ください。
+      </p>
+      <p class="founder-note-text en">
+        Okinawa welcomes guests from all over the world — often through small properties run by just
+        a few people. Late-night messages and multilingual support shouldn't burn them out. I built
+        NiteBot to take over those sleepless hours, so your team can focus on real hospitality.
+        Reach out to me directly — I'd love to help.
+      </p>
+      <div class="founder-note-sign">
+        <div class="founder-note-name">Auguste Fushi <span>オーガスト　楓志</span></div>
+        <div class="founder-note-role">Founder, NiteBot</div>
+      </div>
+      <a href="/contact" class="btn btn-outline" style="margin-top:20px">直接相談する / Talk to me →</a>
     </div>
   </div>
 </section>
