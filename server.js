@@ -57,7 +57,7 @@ const HTML_PAGE = `<!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NiteBot — AI Hotel Concierge</title>
+<title>NiteBot — AI Concierge</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
 
@@ -431,7 +431,7 @@ const HTML_PAGE = `<!DOCTYPE html>
       <div class="header-name">
         NiteBot <div class="online-dot"></div>
       </div>
-      <div class="header-sub">AI Hotel Concierge · AIコンシェルジュ</div>
+      <div class="header-sub">AI Concierge · AIコンシェルジュ</div>
     </div>
     <div class="lang-btns">
       <button class="lang-btn active" onclick="switchLang('en')">EN</button>
@@ -472,7 +472,7 @@ Feel free to ask in English, 日本語, 한국어, or 中文!</div>
   </div>
 
   <!-- Footer -->
-  <div class="powered-by">Powered by <strong>NiteBot</strong> · AI Hotel Concierge Platform</div>
+  <div class="powered-by">Powered by <strong>NiteBot</strong> · AI Concierge Platform</div>
 
 </div>
 
