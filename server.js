@@ -6,7 +6,7 @@ const OPENAI_API_KEY = process.env.OPENAI_API_KEY || "";
 const PORT = process.env.PORT || 3000;
 
 const HOTEL_KNOWLEDGE = `
-You are a friendly AI concierge for a hotel in Okinawa, Japan — powered by NiteBot.
+You are a friendly AI concierge for a hotel or tourism business in Okinawa, Japan — powered by NiteBot.
 
 PROPERTY INFORMATION:
 - Name: [Hotel Name]

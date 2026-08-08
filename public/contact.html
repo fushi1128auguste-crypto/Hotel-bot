@@ -241,7 +241,7 @@
     <div class="section-label">CONTACT / お問い合わせ</div>
     <h1 class="heading-jp">まずはお気軽にご連絡ください</h1>
     <p class="heading-en" style="margin-top:10px">
-      Free consultation — we'll show you a demo tailored to your property.
+      Free consultation — we'll show you a demo tailored to your business.
     </p>
   </div>
 
@@ -258,8 +258,8 @@
             <input type="text" name="name" placeholder="山田 太郎" required/>
           </div>
           <div class="form-group">
-            <label>施設名 <span class="en">/ Property Name</span></label>
-            <input type="text" name="hotel" placeholder="〇〇ゲストハウス" required/>
+            <label>施設・事業者名 <span class="en">/ Business Name</span></label>
+            <input type="text" name="hotel" placeholder="例）〇〇ホテル・〇〇ツアー" required/>
           </div>
         </div>
 
@@ -305,12 +305,12 @@
     <!-- Sidebar -->
     <div class="contact-sidebar">
 
-      <!-- Founder -->
+      <!-- Team -->
       <div class="sidebar-card founder-card">
-        <div class="founder-avatar">AF</div>
-        <div class="founder-name">Auguste Fushi</div>
-        <div class="founder-name-jp">オーガスト　楓志</div>
-        <div class="founder-role">Founder, NiteBot</div>
+        <div class="founder-avatar">NB</div>
+        <div class="founder-name">The NiteBot Team</div>
+        <div class="founder-name-jp">NiteBotチーム</div>
+        <div class="founder-role">Okinawa, Japan</div>
       </div>
 
       <!-- Contact methods -->
@@ -378,7 +378,7 @@
       <ul class="footer-links">
         <li><a href="mailto:hello@nitebot.net">hello@nitebot.net</a></li>
         <li><a href="tel:07038035972">070-3803-5972</a></li>
-        <li style="color:var(--muted);font-size:0.9rem;margin-top:8px">Auguste Fushi — Founder<br>オーガスト　楓志</li>
+        <li style="color:var(--muted);font-size:0.9rem;margin-top:8px">The NiteBot Team<br>NiteBotチーム — Okinawa, Japan</li>
       </ul>
     </div>
   </div>
@@ -420,7 +420,7 @@ async function handleSubmit(e) {
     const subject = encodeURIComponent("NiteBot お問い合わせ / Inquiry from " + (data.get("hotel") || "website"));
     const body = encodeURIComponent(
       "名前 / Name: " + data.get("name") + "\n" +
-      "施設名 / Hotel: " + data.get("hotel") + "\n" +
+      "施設・事業者名 / Business: " + data.get("hotel") + "\n" +
       "メール / Email: " + data.get("email") + "\n" +
       "電話 / Phone: " + data.get("phone") + "\n" +
       "プラン / Plan: " + data.get("plan") + "\n\n" +
